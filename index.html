@@ -3,6 +3,10 @@
     <meta charset="utf-8">
     <title>Reverso-Wiktionary</title>
     <style>
+input {
+  font-size: 1.5em;
+  width: 99%;
+}
 iframe {
   width: 45%;
   height: 100%;
@@ -12,26 +16,33 @@ iframe {
   </head>
 
   <body>
-    <form action="#">
-      <input id="search" type="search" />
+    <form id="form" action="">
+      <input id="search" type="search" name="s" autofocus/>
     </form>
 
-    <iframe id="wt" src="https://en.wiktionary.org/wiki/"></iframe>
-    <iframe id="r" src="http://context.reverso.net/translation/russian-french/"></iframe>
+    <iframe id="wt" src=""></iframe>
+    <iframe id="r"  src=""></iframe>
     
     <script>
 var input = document.getElementById("search");
+var form = document.getElementById("form");
 var iframe1 = document.getElementById("wt");
 var iframe2 = document.getElementById("r");
-input.onchange = function(evt) {
+form.onsubmit = function(evt) {
  evt.preventDefault();
- var s = encodeURIComponent(evt.target.value);
- setTimeout(function(){
-   iframe1.src = "https://en.wiktionary.org/wiki/"+s; 
-   iframe2.src = "http://context.reverso.net/translation/russian-french/"+s; 
- }, 100);
+ setTimeout(search, 100, input.value);
+ if (window.history) history.pushState(input.value, input.value, "index.html?s="+input.value);
  return false;
 }
+function search(value) {
+   var s = (value);
+   input.value = s;
+   iframe1.src = "https://en.wiktionary.org/wiki/"+s+"#Russian"; 
+   iframe2.src = "http://context.reverso.net/translation/russian-french/"+s+"#translations"; 
+ }
+
+var m = window.location.search.match(/\?s=([^&]*)/);
+if (m) search(m[1]);
     </script>
   </body>
 </html>
