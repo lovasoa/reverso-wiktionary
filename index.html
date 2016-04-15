@@ -43,7 +43,7 @@ function search(value) {
  }
 
 var m = window.location.search.match(/\?s=([^&]*)/);
-if (m) search(m[1]);
+if (m) search(decodeURIComponent(m[1]));
     </script>
   </body>
 </html>
