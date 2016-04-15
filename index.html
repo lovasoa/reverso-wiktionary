@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Reverso-Wiktionary</title>
+    <style>
+iframe {
+  width: 45%;
+  height: 100%;
+  display: inline-block;
+}
+    </style>
+  </head>
+
+  <body>
+    <form action="#">
+      <input id="search" type="search" />
+    </form>
+
+    <iframe id="wt" src="https://en.wiktionary.org/wiki/"></iframe>
+    <iframe id="r" src="http://context.reverso.net/translation/russian-french/"></iframe>
+    
+    <script>
+var input = document.getElementById("search");
+var iframe1 = document.getElementById("wt");
+var iframe2 = document.getElementById("r");
+input.onchange = function(evt) {
+ evt.preventDefault();
+ var s = encodeURIComponent(evt.target.value);
+ setTimeout(function(){
+   iframe1.src = "https://en.wiktionary.org/wiki/"+s; 
+   iframe2.src = "http://context.reverso.net/translation/russian-french/"+s; 
+ }, 100);
+ return false;
+}
+    </script>
+  </body>
+</html>
