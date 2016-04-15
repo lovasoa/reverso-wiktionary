@@ -18,7 +18,10 @@ iframe {
 
   <body>
     <form id="form" action="">
-      <input id="search" type="search" name="s" autofocus placeholder="Chercher un mot en russe"/>
+      <input id="search" type="search" name="s" autofocus placeholder="Chercher un mot en russe" list="props"/>
+      <datalist id="props">
+        <option value="caca boudin">
+      </datalist>
     </form>
 
     <iframe id="wt" src=""></iframe>
@@ -27,6 +30,7 @@ iframe {
     <script>
 var input = document.getElementById("search");
 var form = document.getElementById("form");
+var props = document.getElementById("props");
 var iframe1 = document.getElementById("wt");
 var iframe2 = document.getElementById("r");
 form.onsubmit = function(evt) {
@@ -35,12 +39,48 @@ form.onsubmit = function(evt) {
  if (window.history) history.pushState(input.value, input.value, "index.html?s="+input.value);
  return false;
 }
+
 function search(value) {
    var s = (value);
    input.value = s;
    iframe1.src = "https://en.wiktionary.org/wiki/"+s+"#Russian"; 
    iframe2.src = "http://context.reverso.net/translation/russian-french/"+s+"#translations"; 
- }
+}
+
+input.onkeyup = function(e) {
+  if(e.keyCode === 13) {
+    search(input.value);
+    showSuggestions(false);
+  }
+  else {
+    autocompleteRequest(input.value);
+  }
+}
+
+var last_search = "", suggestions = false;
+function autocompleteRequest(s) {
+  if (s === last_search) return;
+  last_search = s;
+  showSuggestions(true);
+  var script = document.createElement("script");
+  script.src = "https://en.wiktionary.org/w/api.php?action=opensearch&format=json&formatversion=2&callback=updateOptions&search="+encodeURIComponent(s);
+  document.body.appendChild(script);
+}
+
+function updateOptions(res) {
+  if (!suggestions) return;
+  props.innerHTML = "";
+  res[1].forEach(function(prop) {
+    var opt = document.createElement("option");
+    opt.value = prop;
+    props.appendChild(opt);
+  });
+}
+
+function showSuggestions(show) {
+  suggestions = show;
+  if (suggestions === false) props.innerHTML = "";
+}
 
 var m = window.location.search.match(/\?s=([^&]*)/);
 if (m) search(decodeURIComponent(m[1]));
