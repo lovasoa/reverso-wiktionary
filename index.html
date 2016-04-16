@@ -35,13 +35,14 @@ var iframe1 = document.getElementById("wt");
 var iframe2 = document.getElementById("r");
 form.onsubmit = function(evt) {
  evt.preventDefault();
- setTimeout(search, 100, input.value);
+ search(input.value);
  if (window.history) history.pushState(input.value, input.value, "index.html?s="+input.value);
  return false;
 }
 
 function search(value) {
    var s = (value);
+   document.title = "Reverso-Wiktionary: " + s;
    input.value = s;
    iframe1.src = "https://en.wiktionary.org/wiki/"+s+"#Russian"; 
    iframe2.src = "http://context.reverso.net/translation/russian-french/"+s+"#translations"; 
