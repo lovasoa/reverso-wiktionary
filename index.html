@@ -85,6 +85,10 @@ function showSuggestions(show) {
 
 var m = window.location.search.match(/\?s=([^&]*)/);
 if (m) search(decodeURIComponent(m[1]));
+
+window.onpopstate = function(evt) {
+  search(evt.state);
+};
     </script>
   </body>
 </html>
