@@ -1,0 +1,10 @@
+input {
+  font-size: 1.5em;
+  width: 99%;
+}
+iframe {
+  width: 49%;
+  height: 100%;
+  border: 1px solid grey;
+  display: inline-block;
+}
